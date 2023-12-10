@@ -1,39 +1,38 @@
 import random
-from colorama import init
-init()
 from colorama import Fore, Back, Style
 
 
-with open('example.txt', 'r+', encoding='utf-8') as f:
-    words_list = f.read().split()
-    length_5 = [i for i in words_list if len(i) == 5]
-    word = random.choice(length_5).upper()
-    count = 0
-    while count < 6:
-        text = input().upper()
-        if text.lower() in length_5:
-            count_yel = 0
-            for i in range(len(text)):
-                if text[i] not in word:
-                    print(Fore.LIGHTWHITE_EX + Back.LIGHTBLACK_EX + Style.BRIGHT + text[i], end=' ')
-                else:
-                    if word.find(text[i]) == i:
-                        print(Fore.LIGHTBLACK_EX + Back.LIGHTYELLOW_EX + Style.BRIGHT + text[i], end=' ')
-                        count_yel += 1
-                    else:
-                        print(Fore.LIGHTBLACK_EX + Back.LIGHTWHITE_EX + Style.BRIGHT + text[i], end=' ')
-            if count_yel == 5:
-                print(Fore.BLACK + Back.CYAN + Style.BRIGHT + 'Вы выиграли, поздравляем!')
-                break
-        else:
-            print(Fore.MAGENTA + Back.RESET +'Такого слова не существует')
+class Wordle:
+    def __init__(self, list_of_words):
+        self.words = []
+        for word in list_of_words:
+            if len(word) == 5:
+                self.words.append(word.upper())
+
+    def start_game(self):
+        self.tries_count = 0
+        self.guessed_count = 0
+        self.word = random.choice(self.words)
+
+    def handle_input_word(self, input_word):
+        self.guessed_count = 0
+        input_word = input_word.upper()
+        if input_word not in self.words:
+            print(Fore.MAGENTA + Back.RESET +'This is unknown word')
             print()
-        count += 1
-    else:
-        print()
-        print(Fore.BLACK + Back.WHITE + Style.BRIGHT + f'Вы проиграли. Загаданное слово было {word}')
-
-
-
+            return
+        for i in range(len(input_word)):
+            if input_word[i] not in self.word:
+                print(Fore.LIGHTWHITE_EX + Back.LIGHTBLACK_EX + Style.BRIGHT + input_word[i], end=' ')
+            else:
+                if input_word[i] == self.word[i]:
+                    print(Fore.LIGHTBLACK_EX + Back.LIGHTYELLOW_EX + Style.BRIGHT + input_word[i], end=' ')
+                    self.guessed_count += 1
+                else:
+                    print(Fore.LIGHTBLACK_EX + Back.LIGHTWHITE_EX + Style.BRIGHT + input_word[i], end=' ')
+        print(Fore.RESET + Back.RESET + Style.RESET_ALL)
+        self.tries_count += 1
+        return self.guessed_count == 5
+            
 
 
