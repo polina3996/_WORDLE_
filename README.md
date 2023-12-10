@@ -19,5 +19,5 @@ Steps to run the program locally
 Steps to build the game into an executable
 * pip install -r -requirements.txt
 * pyinstaller 'main.py' --onefile --name 'wordle_game' --clean
-* ~~~~Copy-Item 'example.txt' 'dist/example.txt'
+* Copy-Item 'example.txt' 'dist/example.txt'
 
